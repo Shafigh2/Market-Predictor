@@ -16,10 +16,10 @@ public class PredictorForecastService {
 
         try (BufferedReader br = new BufferedReader(new InputStreamReader(file.getInputStream()))) {
             String line;
-            br.readLine(); // Ignorer l'en-tête
+            br.readLine();
 
             while ((line = br.readLine()) != null) {
-                String[] columns = line.split(","); // Vous pouvez également gérer d'autres séparateurs ici
+                String[] columns = line.split(",");
                 if (columns.length > 1) {
                     values.add(Double.parseDouble(columns[1]));
                 }
