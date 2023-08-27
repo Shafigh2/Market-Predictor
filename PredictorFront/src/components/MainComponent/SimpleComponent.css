@@ -1,0 +1,17 @@
+.simple-component {
+    font-family: Arial, sans-serif;
+    padding: 20px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    text-align: center;
+    margin: 20px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.simple-component h1 {
+    color: #333;
+}
+
+.simple-component p {
+    color: #666;
+}
