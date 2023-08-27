@@ -4,27 +4,27 @@ import './PredictorComponent.css';
 const PredictorComponent: React.FC = () => {
     const [values, setValues] = useState<number[]>([]);
 
-    const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const handleFileChange = async (event: React.ChangeEvent<HTMLInputElement>) => {
         const file = event.target.files?.[0];
         if (file) {
-            const reader = new FileReader();
-            reader.onload = (e) => {
-                const content = e.target?.result as string;
-                const rows = content.split('\n').slice(1); // Ignorer l'en-tête
+            const formData = new FormData();
+            formData.append('csv', file);
 
-                const separators = [',', ';', '\t'];
-                const parsedValues = rows.map(row => {
-                    let columns: string[] = [];
-                    for (const sep of separators) {
-                        columns = row.split(sep);
-                        if (columns.length > 1) break;
-                    }
-                    return columns[1] ? parseFloat(columns[1]) : NaN;
-                }).filter(value => !isNaN(value));
+            try {
+                const response = await fetch('/api/predictor/forecast', {
+                    method: 'POST',
+                    body: formData,
+                });
 
-                setValues(parsedValues);
-            };
-            reader.readAsText(file);
+                if (response.ok) {
+                    const parsedValues = await response.json();
+                    setValues(parsedValues);
+                } else {
+                    console.error("Erreur lors de l'envoi du fichier au back-end");
+                }
+            } catch (error) {
+                console.error("Erreur lors de l'envoi du fichier:", error);
+            }
         }
     };
 
